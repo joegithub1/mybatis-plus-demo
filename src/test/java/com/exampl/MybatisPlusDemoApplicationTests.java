@@ -2,12 +2,18 @@ package com.exampl;
 
 import com.baomidou.mybatisplus.annotation.DbType;
 import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.generator.AutoGenerator;
 import com.baomidou.mybatisplus.generator.InjectionConfig;
 import com.baomidou.mybatisplus.generator.config.*;
 import com.baomidou.mybatisplus.generator.config.po.TableInfo;
 import com.baomidou.mybatisplus.generator.config.rules.NamingStrategy;
+import com.exampl.beans.Message;
+import com.exampl.mapper.MessageMapper;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
+import org.junit.platform.commons.util.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import java.util.ArrayList;
@@ -22,6 +28,94 @@ class MybatisPlusDemoApplicationTests {
     public String dir = "E:\\IdeaProjects\\mybatis-plus-demo";
     @Test
     void contextLoads() {
+    }
+
+    @Autowired
+    public MessageMapper messageMapper;
+
+    @Test
+    public void selectOne(){
+        List<Message> messageList = messageMapper.selectList(null);
+        Assertions.assertEquals(3,messageList.size());
+        System.out.println("-------------------");
+    }
+
+    @Test
+    public void selectMessWrapper(){
+        QueryWrapper<Message> queryWrapper = new QueryWrapper<>();
+        //column字段是数据库的列名
+        queryWrapper.eq("title","新闻3");
+
+        List<Message> messagesList = messageMapper.selectList(queryWrapper);
+        messagesList.forEach(System.out::println);
+    }
+
+    /**
+    * @Title: selectMessWrapperSuper
+    * @Description:  返回固定的几个列
+    * @return void
+    * @date 2020-07-08
+    * @author HuangJian
+    */
+    @Test
+    public void selectMessWrapperSuper(){
+        QueryWrapper<Message> queryWrapper = new QueryWrapper<>();
+        //column字段是数据库的列名
+        queryWrapper.select("id","content").eq("title","新闻3");
+
+        List<Message> messagesList = messageMapper.selectList(queryWrapper);
+        messagesList.forEach(System.out::println);
+    }
+    /**
+    * @Title: selectMessWrapperSuper2 
+    * @Description:  排除 title , id 列
+    * @return void
+    * @date 2020-07-08 
+    * @author HuangJian
+    */
+    @Test
+    public void selectMessWrapperSuper2(){
+        QueryWrapper<Message> queryWrapper = new QueryWrapper<>();
+        //column字段是数据库的列名
+        queryWrapper.select(Message.class,info->info.getColumn().equals("title")&&
+                info.getColumn().equals("id")).eq("title","新闻3");
+
+        List<Message> messagesList = messageMapper.selectList(queryWrapper);
+        messagesList.forEach(System.out::println);
+    }
+
+    @Test
+    public void testConditition(){
+        String title = "3";
+        String content = "";
+        condititionMethod(title,content);
+    }
+
+    public void condititionMethod(String title,String content){
+        QueryWrapper<Message> queryWrapper = new QueryWrapper<>();
+       /* if(StringUtils.isNotBlank(title)){
+
+        }*/
+        queryWrapper.like(StringUtils.isNotBlank(title),"title",title);
+        queryWrapper.like(StringUtils.isNotBlank(content),"content",content);
+        List<Message> messagesList = messageMapper.selectList(queryWrapper);
+        messagesList.forEach(System.out::println);
+    }
+
+    @Test
+    public void testAllEq(){
+        QueryWrapper<Message> queryWrapper = new QueryWrapper<>();
+
+        Map<String,String> params = new HashMap<>();
+        params.put("title","新闻1");
+        params.put("content","中国新闻1");
+        queryWrapper.allEq(params);
+        //queryWrapper.allEq(params,false); 为null 是否查询
+        List<Message> messagesList = messageMapper.selectList(queryWrapper);
+        messagesList.forEach(System.out::println);
+    }
+    public void listPage(){
+        //messageMapper.selectPage();
     }
 
     /**

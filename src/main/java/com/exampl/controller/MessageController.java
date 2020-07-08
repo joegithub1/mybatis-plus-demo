@@ -10,6 +10,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import java.util.List;
+
 /**
  * <p>
  *  前端控制器
@@ -22,14 +24,15 @@ import org.springframework.web.bind.annotation.ResponseBody;
 @RequestMapping("/message")
 public class MessageController {
 
-    /*@Autowired
-    public BaseMapper<Message> baseMapper;
+    @Autowired
+    public MessageMapper messageMapper;
     @RequestMapping("/get")
     @ResponseBody
-    public String get(String id){
-        Message message = baseMapper.selectById(String.valueOf(id));
-        System.out.println(message);
-        return null;
-    }*/
+    public Message get(String id){
+        //List<Message> messagesList = messageMapper.selectList(null);
+        Message message = messageMapper.selectById(id);
+        return message;
+    }
+
 }
 
