@@ -14,4 +14,11 @@
         id, content, title
     </sql>
 
+    <select id="selectMyAll" resultType="com.exampl.beans.Message">
+        select * from t_message ${ew.customSqlSegment}
+    </select>
+
+    <select id="selectMyPage" resultType="com.exampl.beans.Message">
+         select * from t_message ${ew.customSqlSegment}
+    </select>
 </mapper>

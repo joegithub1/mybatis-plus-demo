@@ -1,6 +1,7 @@
 package com.exampl.controller;
 
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.exampl.beans.Message;
 import com.exampl.mapper.MessageMapper;
@@ -34,5 +35,14 @@ public class MessageController {
         return message;
     }
 
+    @RequestMapping("/findAll")
+    @ResponseBody
+    public Message findAll(){
+        QueryWrapper<Message> queryWrapper = new QueryWrapper<>();
+        queryWrapper.like("title","新闻");
+        List<Message> messagesList = messageMapper.selectMyAll(queryWrapper);
+        messagesList.forEach(System.out::println);
+        return messagesList.get(0);
+    }
 }
 

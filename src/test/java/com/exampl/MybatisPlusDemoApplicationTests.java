@@ -3,6 +3,7 @@ package com.exampl;
 import com.baomidou.mybatisplus.annotation.DbType;
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.generator.AutoGenerator;
 import com.baomidou.mybatisplus.generator.InjectionConfig;
 import com.baomidou.mybatisplus.generator.config.*;
@@ -10,6 +11,7 @@ import com.baomidou.mybatisplus.generator.config.po.TableInfo;
 import com.baomidou.mybatisplus.generator.config.rules.NamingStrategy;
 import com.exampl.beans.Message;
 import com.exampl.mapper.MessageMapper;
+import com.sun.org.apache.xerces.internal.impl.xs.SchemaSymbols;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.platform.commons.util.StringUtils;
@@ -114,10 +116,46 @@ class MybatisPlusDemoApplicationTests {
         List<Message> messagesList = messageMapper.selectList(queryWrapper);
         messagesList.forEach(System.out::println);
     }
-    public void listPage(){
-        //messageMapper.selectPage();
+    @Test
+    public void testMySql(){
+        QueryWrapper<Message> queryWrapper = new QueryWrapper<Message>();
+        queryWrapper.like("title","新闻");
+        List<Message> messagesList = messageMapper.selectMyAll(null);
+        messagesList.forEach(System.out::println);
     }
+    @Test
+    public void listPage(){
+        Page<Message> page = new Page<>(1,2,false);//isSearchCount:true返回总行数，false不返回
+        Page<Message> messagePage = messageMapper.selectPage(page, null);
 
+        List<Message> records = messagePage.getRecords();
+        records.forEach(System.out::println);
+
+        System.out.println("当前页："+messagePage.getCurrent()+"\t总记录数："+messagePage.getTotal()+"\t每页："+
+                messagePage.getSize()+"\t总页数："+messagePage.getPages());
+    }
+    @Test
+    public void listPageMap(){
+        Page<Map<String,Object>> page = new Page<>(1,2);
+        Page<Map<String, Object>> mapPage = messageMapper.selectMapsPage(page, null);
+        List<Map<String, Object>> records = mapPage.getRecords();
+        System.out.println(records);
+        System.out.println("当前页："+mapPage.getCurrent()+"\t总记录数："+mapPage.getTotal()+"\t每页："+
+                mapPage.getSize()+"\t总页数："+mapPage.getPages());
+    }
+    @Test
+    public void listMyPage(){
+        QueryWrapper<Message> queryWrapper = new QueryWrapper<>();
+        Page<Message> page = new Page<>(1,2,true);//isSearchCount:true返回总行数，false不返回
+        //自定义page queryWrapper 不能是null
+        Page<Message> messagePage = messageMapper.selectMyPage(page,queryWrapper);
+
+        List<Message> records = messagePage.getRecords();
+        records.forEach(System.out::println);
+
+        System.out.println("当前页："+messagePage.getCurrent()+"\t总记录数："+messagePage.getTotal()+"\t每页："+
+                messagePage.getSize()+"\t总页数："+messagePage.getPages());
+    }
     /**
      *
      * IdType.AUTO 数据库ID自增
