@@ -29,7 +29,7 @@ server:
   port: 8081
 mybatis:
   mapper-locations: classpath:mybatis/mapper/*.xml
-  type-aliases-package: com.exampl.
+  type-aliases-package: com.exampl.beans
 #  configuration:
 #    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
 #打印日志
