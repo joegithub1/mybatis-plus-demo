@@ -30,8 +30,6 @@ server:
 mybatis:
   mapper-locations: classpath:mybatis/mapper/*.xml
   type-aliases-package: com.exampl.beans
-#  configuration:
-#    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
 #打印日志
 logging:
   level:
@@ -41,4 +39,5 @@ logging:
     console: '%p%m%n'
 mybatis-plus:
   mapper-locations: classpath:mybatis/mapper/*.xml  #SQ写在mapper.xml中需要加这个扫描mapper.xml
-
+  configuration:
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
