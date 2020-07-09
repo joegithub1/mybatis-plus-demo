@@ -11,7 +11,6 @@ import com.baomidou.mybatisplus.generator.config.po.TableInfo;
 import com.baomidou.mybatisplus.generator.config.rules.NamingStrategy;
 import com.exampl.beans.Message;
 import com.exampl.mapper.MessageMapper;
-import com.sun.org.apache.xerces.internal.impl.xs.SchemaSymbols;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.platform.commons.util.StringUtils;
